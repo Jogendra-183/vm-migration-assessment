@@ -1,0 +1,45 @@
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Java / Maven
+target/
+backend/target/
+*.class
+.mvn/
+mvnw
+mvnw.cmd
+.flattened-pom.xml
+
+# Node / Frontend
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+dist-ssr/
+*.local
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Credentials and secrets
+*credentials*.json
+*key*.json
+*.pem
+
+# OS & Logs
+Thumbs.db
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+

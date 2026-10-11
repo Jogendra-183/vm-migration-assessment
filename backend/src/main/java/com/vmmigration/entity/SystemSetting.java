@@ -1,0 +1,30 @@
+package com.vmmigration.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "system_settings")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class SystemSetting {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "setting_key", nullable = false, unique = true, length = 100)
+    private String settingKey;
+
+    @Column(name = "setting_value", nullable = false, length = 255)
+    private String settingValue;
+
+    @Column(nullable = false, length = 50)
+    private String category;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+}

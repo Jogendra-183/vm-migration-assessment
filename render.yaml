@@ -1,0 +1,76 @@
+services:
+  # 1. Spring Boot Backend Web Service
+  - type: web
+    name: vmmigration-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    region: oregon
+    healthCheckPath: /api/cloud/health
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: DB_HOST
+        fromDatabase:
+          name: vmmigration-postgres
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: vmmigration-postgres
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: vmmigration-postgres
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: vmmigration-postgres
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: vmmigration-postgres
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://vmmigration-frontend.onrender.com,http://localhost:5173
+      - key: GCP_PROJECT_ID
+        value: project-7a8d1679-ad3e-46db-bb2
+      - key: GCP_DEFAULT_REGION
+        value: us-central1
+      - key: GCP_DEFAULT_ZONE
+        value: us-central1-a
+      - key: GCP_DEFAULT_NETWORK
+        value: default
+      - key: GCP_MOCK_MODE
+        value: "false"
+      - key: GCP_MAX_CONCURRENT_VMS
+        value: "5"
+      - key: GCP_CREDENTIALS_JSON
+        sync: false
+
+  # 2. React Vite Frontend Static Site
+  - type: web
+    name: vmmigration-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    plan: free
+    region: oregon
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://vmmigration-backend.onrender.com/api
+
+databases:
+  # 3. PostgreSQL Database
+  - name: vmmigration-postgres
+    databaseName: vmmigration
+    user: postgres
+    plan: free
+    region: oregon
