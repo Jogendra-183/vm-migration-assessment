@@ -51,13 +51,11 @@ services:
         sync: false
 
   # 2. React Vite Frontend Static Site
-  - type: web
+  - type: static
     name: vmmigration-frontend
-    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
-    plan: free
     routes:
       - type: rewrite
         source: /*
